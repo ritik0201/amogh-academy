@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         const modelNames = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-flash-latest", "gemini-pro-latest", "gemini-pro"];
         let lastError = null;
 
-        const finalMessage = messages[messages.length - 1].content;
+        const finalMessage = messages[messages.length - 1].content; //hi
         const msgHistory = messages.slice(0, -1);
 
         for (const modelName of modelNames) {
