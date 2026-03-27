@@ -77,7 +77,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
             {/* Left Column: Text */}
-            <div className="text-left relative z-20 order-2 lg:order-1">
+            <div className="text-left relative z-20">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-blue-100 text-blue-700 font-bold mb-8 shadow-sm">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -112,7 +112,7 @@ export default function Home() {
             </div>
 
             {/* Right Column: Premium Inquiry Form */}
-            <div className="relative z-20 order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div className="relative z-20 flex justify-center lg:justify-end">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-sky-100 rounded-[2.5rem] transform rotate-3 scale-[1.02] blur-md opacity-50"></div>
               <div className="bg-white/80 backdrop-blur-2xl p-8 w-full max-w-[440px] rounded-[2rem] shadow-2xl border border-white relative relative">
                 
