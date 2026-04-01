@@ -18,7 +18,7 @@ export default function Navbar() {
         setIsVisible(true);
       }
 
-      setLastScrollY(currentScrollY);
+      setLastScrollY(currentScrollY); //
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
