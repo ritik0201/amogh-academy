@@ -27,9 +27,10 @@ export default function Footer() {
           <div className="lg:ml-auto">
             <h4 className="text-slate-900 font-black text-lg mb-6 tracking-wide">Quick Links</h4>
             <ul className="space-y-4 text-sm font-bold">
-              <li><a href="/#coaching" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Coaching Classes</a></li>
-              <li><a href="/#computer-edu" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Computer Education</a></li>
-              <li><a href="/#achievements" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Wall of Fame</a></li>
+              <li><a href="/coaching" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Coaching Classes</a></li>
+              <li><a href="/computer-edu" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Computer Education</a></li>
+              <li><a href="/join-us" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Join Amogh Academy</a></li>
+              <li><a href="/faculty" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Our Faculty</a></li>
               <li><a href="/contact" className="hover:text-blue-600 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-blue-500" /> Contact Us</a></li>
             </ul>
           </div>

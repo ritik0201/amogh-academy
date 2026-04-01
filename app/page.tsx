@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { 
   GraduationCap, Monitor, CheckCircle, 
-  BookOpen, Award, Zap, ChevronRight, User, Phone, Mail, Book, Star
+  BookOpen, Award, Zap, ChevronRight, User, Phone, Mail, Book, Star,
+  Users, FlaskConical, Calculator, Globe, Microscope, Atom, ArrowRight, Sparkles
 } from "lucide-react";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
@@ -56,7 +57,6 @@ export default function Home() {
       setErrorMessage("Failed to submit form. Please try again.");
     }
   };
-
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-500 selection:text-white scroll-smooth overflow-x-hidden relative">
       
@@ -95,12 +95,12 @@ export default function Home() {
                 Join Varanasi's premier institute for <span className="font-bold text-slate-800">expert K-12 coaching</span> and <span className="font-bold text-slate-800">advanced computer education</span>. We build careers, not just students.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 items-start">
-                <a href="#coaching" className="group px-8 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 text-center flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <a href="/coaching" className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 flex justify-center items-center gap-2">
                   Explore Courses
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </a>
-                <a href="#contact" className="px-8 py-3.5 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 font-bold text-base hover:bg-white hover:border-slate-300 transition-all shadow-sm text-center">
+                <a href="/contact" className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 font-bold text-base hover:bg-white hover:border-slate-300 transition-all shadow-sm flex justify-center items-center">
                   Contact Us
                 </a>
               </div>
@@ -223,9 +223,10 @@ export default function Home() {
                     <div className="w-3 h-3 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50"></div>
                     <span className="font-bold text-slate-700">Commerce</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-sky-500 shadow-sm shadow-sky-500/50"></div>
-                    <span className="font-bold text-slate-700">Arts</span>
+                  <div className="flex items-center gap-3 flex-grow">
+                    <a href="/coaching" className="inline-flex items-center gap-2 text-blue-600 font-black text-sm uppercase tracking-wider hover:translate-x-1 transition-transform">
+                      View Details <ChevronRight className="w-4 h-4" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -253,6 +254,11 @@ export default function Home() {
                     <span className="font-black text-lg text-slate-800 tracking-wide">IIT-JEE</span>
                   </li>
                 </ul>
+                <div className="mt-8 pt-6 border-t border-sky-100 relative z-10 text-center">
+                  <a href="/classes" className="inline-flex items-center gap-2 text-sky-600 font-black text-sm uppercase tracking-wider hover:translate-x-1 transition-transform">
+                    Check Syllabuss <ChevronRight className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </div>
             
@@ -280,6 +286,229 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Classes Offered Section */}
+      <section id="classes" className="relative z-10 py-24 border-t border-slate-200/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center justify-center p-4 bg-gradient-to-br from-blue-500 to-sky-600 text-white rounded-2xl shadow-lg shadow-blue-500/20 mb-8">
+              <GraduationCap className="w-10 h-10" />
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-tight mb-4">
+              Classes <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-500">Offered</span>
+            </h2>
+            <p className="text-slate-600 text-lg font-medium">Comprehensive curriculum designed for every stage of your academic journey.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            {/* Class 6th - 8th */}
+            <div className="group relative bg-white/80 backdrop-blur-md rounded-[2rem] overflow-hidden border border-slate-200 hover:border-blue-300 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl shadow-lg flex flex-col">
+              <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-[40px] -mr-10 -mt-10"></div>
+                <div className="relative z-10">
+                  <div className="text-5xl font-black text-white drop-shadow-lg">6<sup className="text-3xl">th</sup> – 8<sup className="text-3xl">th</sup></div>
+                  <div className="mt-3 inline-flex items-center gap-2 bg-white rounded-full px-4 py-1.5 text-blue-700 text-xs font-black shadow-sm tracking-wider uppercase">All Subjects</div>
+                </div>
+              </div>
+              <div className="p-8 flex-grow">
+                <p className="text-slate-600 font-medium mb-6 leading-relaxed">Strong foundational coaching across all subjects to build academic confidence from the ground up.</p>
+                <ul className="space-y-3">
+                  {["Mathematics", "Science", "Social Studies", "English & Hindi", "Computer Basics"].map((sub) => (
+                    <li key={sub} className="flex items-center gap-3 text-slate-700 font-bold">
+                      <CheckCircle className="w-5 h-5 text-blue-500 shrink-0" />{sub}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Class 9th - 10th */}
+            <div className="group relative bg-white/80 backdrop-blur-md rounded-[2rem] overflow-hidden border border-slate-200 hover:border-sky-300 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl shadow-lg flex flex-col">
+              <div className="bg-gradient-to-br from-sky-500 to-blue-600 p-8 text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-[40px] -mr-10 -mt-10"></div>
+                <div className="relative z-10">
+                  <div className="text-5xl font-black text-white drop-shadow-lg">9<sup className="text-3xl">th</sup> – 10<sup className="text-3xl">th</sup></div>
+                  <div className="mt-3 inline-flex items-center gap-2 bg-white rounded-full px-4 py-1.5 text-sky-700 text-xs font-black shadow-sm tracking-wider uppercase">Board Foundation</div>
+                </div>
+              </div>
+              <div className="p-8 flex-grow">
+                <p className="text-slate-600 font-medium mb-6 leading-relaxed">Focused preparation for board exams with expert coaching in core subjects.</p>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3 text-slate-700 font-bold"><Calculator className="w-5 h-5 text-sky-500 shrink-0" />Mathematics</li>
+                  <li className="flex items-center gap-3 text-slate-700 font-bold"><FlaskConical className="w-5 h-5 text-sky-500 shrink-0" />Science</li>
+                  <li className="flex items-center gap-3 text-slate-700 font-bold"><Globe className="w-5 h-5 text-sky-500 shrink-0" />Social Science (S.S.T)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Class 11th - 12th */}
+            <div className="group relative bg-white/80 backdrop-blur-md rounded-[2rem] overflow-hidden border border-slate-200 hover:border-blue-400 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl shadow-lg flex flex-col">
+              <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-8 text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-[40px] -mr-10 -mt-10"></div>
+                <div className="relative z-10">
+                  <div className="text-5xl font-black text-white drop-shadow-lg">11<sup className="text-3xl">th</sup> – 12<sup className="text-3xl">th</sup></div>
+                  <div className="mt-3 inline-flex items-center gap-2 bg-white rounded-full px-4 py-1.5 text-blue-700 text-xs font-black shadow-sm tracking-wider uppercase">Stream Specialization</div>
+                </div>
+              </div>
+              <div className="p-8 flex-grow">
+                <p className="text-slate-600 font-medium mb-6 leading-relaxed">Choose your stream and get specialized coaching by subject experts.</p>
+                <div className="space-y-5">
+                  <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4">
+                    <div className="text-blue-700 font-black mb-2 tracking-wider uppercase text-sm">PCM Stream</div>
+                    <div className="flex flex-wrap gap-2">
+                      {["Physics", "Chemistry", "Maths"].map((s) => (
+                        <span key={s} className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="bg-sky-50 border border-sky-100 rounded-2xl p-4">
+                    <div className="text-sky-700 font-black mb-2 tracking-wider uppercase text-sm">PCB Stream</div>
+                    <div className="flex flex-wrap gap-2">
+                      {["Physics", "Chemistry", "Biology"].map((s) => (
+                        <span key={s} className="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">{s}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Faculty Section */}
+      <section id="faculty" className="relative z-10 py-24 border-t border-slate-200/50 bg-slate-50/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center justify-center p-4 bg-gradient-to-br from-slate-700 to-slate-900 text-white rounded-2xl shadow-lg mb-8">
+              <Users className="w-10 h-10" />
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-tight mb-4">
+              Meet Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-500">Faculty</span>
+            </h2>
+            <p className="text-slate-600 text-lg font-medium">Experienced, passionate educators dedicated to your success.</p>
+          </div>
+
+          {/* Director + Co-Founder Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+
+            {/* Ayush Upadhyay - Founder */}
+            <div className="group relative bg-white/90 backdrop-blur-md rounded-[2rem] p-8 border border-slate-200 hover:border-blue-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg">
+              <div className="flex items-start gap-6">
+                <div className="relative shrink-0">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-blue-500/30">
+                    A
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow">FOUNDER</div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-black text-slate-900 mb-1">Ayush Upadhyay</h3>
+                  <p className="text-blue-600 font-bold text-sm uppercase tracking-wider mb-3">Founder & Director</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="bg-blue-50 border border-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">Mathematics</span>
+                    <span className="bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">10 Yrs Experience</span>
+                  </div>
+                  <p className="text-slate-500 font-medium text-sm leading-relaxed">Expert Mathematics educator with a decade of coaching experience. Leads the vision and academic excellence of Amogh Academy.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Madhumita Upadhyay - Co-Founder */}
+            <div className="group relative bg-white/90 backdrop-blur-md rounded-[2rem] p-8 border border-slate-200 hover:border-sky-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg">
+              <div className="flex items-start gap-6">
+                <div className="relative shrink-0">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-sky-500/30">
+                    M
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-sky-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow">CO-FOUNDER</div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-black text-slate-900 mb-1">Madhumita Upadhyay</h3>
+                  <p className="text-sky-600 font-bold text-sm uppercase tracking-wider mb-3">Co-Founder</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="bg-sky-50 border border-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">Chemistry</span>
+                    <span className="bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">M.Sc Chemistry</span>
+                    <span className="bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">B.Ed</span>
+                    <span className="bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">6 Yrs Experience</span>
+                  </div>
+                  <p className="text-slate-500 font-medium text-sm leading-relaxed">M.Sc Chemistry graduate and B.Ed holder with 6 years of teaching experience, nurturing a deep understanding of Chemistry.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Rest of Team - 3 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            {/* Rohit Pathak */}
+            <div className="group relative bg-white/90 backdrop-blur-md rounded-[2rem] p-7 border border-slate-200 hover:border-blue-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-md">
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-5">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-3xl font-black shadow-lg">
+                    R
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-blue-700 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">ACAD HEAD</div>
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-1">Rohit Pathak</h3>
+                <p className="text-blue-600 font-bold text-xs uppercase tracking-wider mb-4">Academic & Management Head</p>
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  <span className="bg-blue-50 border border-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">Physics</span>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">M.Sc Physics</span>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">B.Ed</span>
+                </div>
+                <p className="text-slate-500 text-sm font-medium">5 years of Physics teaching experience. Manages academic operations and ensures quality education standards.</p>
+              </div>
+            </div>
+
+            {/* Sanitri Dubey */}
+            <div className="group relative bg-white/90 backdrop-blur-md rounded-[2rem] p-7 border border-slate-200 hover:border-green-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-md">
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-5">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-white text-3xl font-black shadow-lg">
+                    S
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-green-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">FACULTY</div>
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-1">Sanitri Dubey</h3>
+                <p className="text-green-600 font-bold text-xs uppercase tracking-wider mb-4">Team Member</p>
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  <span className="bg-green-50 border border-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">Biology</span>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">M.Sc Biology</span>
+                </div>
+                <p className="text-slate-500 text-sm font-medium">M.Sc Biology specialist with 4 years of teaching experience, making life sciences engaging and approachable.</p>
+              </div>
+            </div>
+
+            {/* Kiran Kannojiya */}
+            <div className="group relative bg-white/90 backdrop-blur-md rounded-[2rem] p-7 border border-slate-200 hover:border-purple-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-md">
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-5">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-3xl font-black shadow-lg">
+                    K
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">FACULTY</div>
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-1">Kiran Kannojiya</h3>
+                <p className="text-purple-600 font-bold text-xs uppercase tracking-wider mb-4">Team Member</p>
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  <span className="bg-purple-50 border border-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full">B.Sc BZC</span>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">M.A. Education</span>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full">B.Ed & M.Ed</span>
+                </div>
+                <p className="text-slate-500 text-sm font-medium">5+ years of teaching experience with advanced qualifications in Education — B.Ed & M.Ed — bringing pedagogy expertise to every class.</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* View All Faculty CTA */}
+          <div className="text-center mt-16">
+             <a href="/faculty" className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-slate-900 text-white font-black hover:bg-blue-600 transition-all shadow-xl hover:-translate-y-1">
+               View Full Faculty Profiles <ArrowRight className="w-5 h-5" />
+             </a>
           </div>
         </div>
       </section>
@@ -364,6 +593,11 @@ export default function Home() {
                   <li className="flex items-start gap-3"><CheckCircle className="w-6 h-6 text-blue-400 shrink-0" /> Internet & E-mail</li>
                   <li className="flex items-start gap-3"><CheckCircle className="w-6 h-6 text-blue-400 shrink-0" /> Online CCC Exam</li>
                 </ul>
+              </div>
+              <div className="p-8 pt-0 mt-auto">
+                 <a href="/computer-edu" className="w-full py-3 rounded-xl border border-blue-100 flex items-center justify-center gap-2 text-blue-600 font-black text-sm uppercase tracking-wider hover:bg-blue-50 transition-all">
+                    Course Details <ChevronRight className="w-4 h-4" />
+                 </a>
               </div>
             </div>
           </div>
