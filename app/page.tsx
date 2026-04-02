@@ -1,15 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   GraduationCap, Monitor, CheckCircle, 
   BookOpen, Award, Zap, ChevronRight, User, Phone, Mail, Book, Star,
-  Users, FlaskConical, Calculator, Globe, Microscope, Atom, ArrowRight, Sparkles
+  Users, FlaskConical, Calculator, Globe, Microscope, Atom, ArrowRight, Sparkles, Loader2, Play
 } from "lucide-react";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 export default function Home() {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -18,6 +28,113 @@ export default function Home() {
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(true);
+  const [buyingCourseId, setBuyingCourseId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const res = await fetch("/api/courses");
+      const data = await res.json();
+      if (res.ok) setCourses(data);
+    } catch (error) {
+      console.error("Failed to fetch courses:", error);
+    } finally {
+      setLoadingCourses(false);
+    }
+  };
+
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlePayment = async (course: any) => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+
+    setBuyingCourseId(course._id);
+    const res = await loadRazorpay();
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      setBuyingCourseId(null);
+      return;
+    }
+
+    try {
+      // 1. Create order on server
+      const orderRes = await fetch("/api/razorpay/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          amount: course.price || 5, 
+          courseId: course._id 
+        }),
+      });
+
+      const orderData = await orderRes.json();
+
+      if (!orderRes.ok) throw new Error(orderData.error || "Failed to create order");
+
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RP_KEY_ID,
+        amount: orderData.amount,
+        currency: "INR",
+        name: "Amogh Academy",
+        description: `Purchase ${course.title}`,
+        image: "/logo.png",
+        order_id: orderData.id,
+        handler: async function (response: any) {
+          // 3. Verify payment on server
+          const verifyRes = await fetch("/api/razorpay/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              courseId: course._id,
+            }),
+          });
+
+          const verifyData = await verifyRes.json();
+          if (verifyRes.ok) {
+            alert("Payment Successful! Welcome to the course.");
+            router.push("/student/course");
+          } else {
+            alert("Verification failed: " + verifyData.error);
+          }
+        },
+        prefill: {
+          name: session.user?.name,
+          email: session.user?.email,
+        },
+        theme: {
+          color: "#2563eb",
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setBuyingCourseId(null);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -601,6 +718,90 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Online Courses Section */}
+      <section id="online-courses" className="relative z-10 py-24 bg-slate-950 overflow-hidden">
+        {/* Animated Background for Cinematic effect */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,#1e3a8a_0%,transparent_50%)] opacity-30"></div>
+          <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_80%,#1e40af_0%,transparent_50%)] opacity-30"></div>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-bold mb-4 text-xs uppercase tracking-widest">
+                <Sparkles className="w-3 h-3" /> Digital Learning
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
+                Online <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-300">Courses</span>
+              </h2>
+            </div>
+            <p className="text-slate-400 text-lg max-w-md font-medium">
+              Access premium video lectures and material from the comfort of your home.
+            </p>
+          </div>
+
+          {loadingCourses ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {courses.length > 0 ? (
+                courses.map((course) => (
+                  <div key={course._id} className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-blue-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
+                    <div className="relative h-56 overflow-hidden">
+                      <img 
+                        src={course.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
+                        alt={course.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60"></div>
+                      <div className="absolute bottom-4 left-6 py-1 px-3 bg-blue-600 rounded-full text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+                        <Play className="w-3 h-3" fill="white" /> Video Course
+                      </div>
+                    </div>
+                    
+                    <div className="p-8">
+                      <h3 className="text-2xl font-black text-white mb-2 line-clamp-1">{course.title}</h3>
+                      <p className="text-slate-400 text-sm font-medium mb-6 line-clamp-2 leading-relaxed">
+                        {course.description || "Comprehensive online module covering all core concepts with expert guidance."}
+                      </p>
+                      
+                      <div className="flex items-center justify-between pt-6 border-t border-white/10">
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Price</span>
+                          <span className="text-3xl font-black text-white">₹{course.price || 5}</span>
+                        </div>
+                        
+                        <button 
+                          onClick={() => handlePayment(course)}
+                          disabled={buyingCourseId === course._id}
+                          className="px-6 py-3.5 bg-blue-600 text-white font-black rounded-2xl shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50"
+                        >
+                          {buyingCourseId === course._id ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <>
+                              Enroll Now <ArrowRight className="w-4 h-4" />
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full py-20 text-center text-slate-500 font-bold border-2 border-dashed border-white/5 rounded-[3rem]">
+                  No online courses available at the moment.
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

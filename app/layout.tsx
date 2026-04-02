@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Chatbot from "./components/Chatbot";
+import AuthProvider from "./components/AuthProvider";
 
 
 export default function RootLayout({
@@ -11,8 +12,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
-        <Chatbot />
+        <AuthProvider>
+          {children}
+          <Chatbot />
+        </AuthProvider>
       </body>
     </html>
   );

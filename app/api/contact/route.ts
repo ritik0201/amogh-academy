@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sendMail } from "@/app/lib/sendMail";
+import { sendMail } from "@/lib/sendMail";
 
 export async function POST(request: Request) {
   try {
