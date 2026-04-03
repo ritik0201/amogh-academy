@@ -20,7 +20,7 @@ export const sendMail = async ({ name, phone, email, course, message }: SendMail
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "shiwangi004tiwari@gmail.com",
+      to: "ayushttf@gmail.com",
       subject: `New Amogh Academy Inquiry: ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-w: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px;">

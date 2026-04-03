@@ -8,11 +8,19 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 export default function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const [course, setCourse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -46,15 +54,93 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
     }
   };
 
-  const handleEnroll = () => {
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleEnroll = async () => {
     if (status !== "authenticated") {
       toast.info("Please log in to enroll in this course.");
       router.push("/login");
       return;
     }
-    // Proceed to student dashboard or payment gateway
-    toast.success("Redirecting to enrollment...");
-    router.push("/dashboard");
+
+    setIsProcessing(true);
+    const res = await loadRazorpay();
+
+    if (!res) {
+      toast.error("Razorpay SDK failed to load. Are you online?");
+      setIsProcessing(false);
+      return;
+    }
+
+    try {
+      // 1. Create order on server
+      const orderRes = await fetch("/api/razorpay/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          amount: course.price || 5, 
+          courseId: course._id 
+        }),
+      });
+
+      const orderData = await orderRes.json();
+
+      if (!orderRes.ok) throw new Error(orderData.error || "Failed to create order");
+
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RP_KEY_ID,
+        amount: orderData.amount,
+        currency: "INR",
+        name: "Amogh Academy",
+        description: `Purchase ${course.title}`,
+        image: "/logo.png",
+        order_id: orderData.id,
+        handler: async function (response: any) {
+          // 3. Verify payment on server
+          const verifyRes = await fetch("/api/razorpay/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              courseId: course._id,
+            }),
+          });
+
+          const verifyData = await verifyRes.json();
+          if (verifyRes.ok) {
+            toast.success("Payment Successful! Welcome to the course.");
+            router.push("/student/course");
+          } else {
+            toast.error("Verification failed: " + verifyData.error);
+          }
+        },
+        prefill: {
+          name: session?.user?.name,
+          email: session?.user?.email,
+        },
+        theme: {
+          color: "#2563eb",
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (loading) {
@@ -131,10 +217,17 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                    ) : (
                       <button 
                         onClick={handleEnroll}
-                        className="flex-1 max-w-[240px] flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-blue-600 text-white font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/30 active:scale-95"
+                        disabled={isProcessing}
+                        className="flex-1 max-w-[240px] flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-blue-600 text-white font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/30 active:scale-95 disabled:opacity-50"
                       >
-                         <GraduationCap className="w-6 h-6" />
-                         Enroll for ₹{course.price}
+                         {isProcessing ? (
+                           <Loader2 className="w-6 h-6 animate-spin" />
+                         ) : (
+                           <>
+                             <GraduationCap className="w-6 h-6" />
+                             Enroll for ₹{course.price}
+                           </>
+                         )}
                       </button>
                    )}
 
