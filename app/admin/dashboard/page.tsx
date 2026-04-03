@@ -1,21 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Users, GraduationCap, BookOpen, TrendingUp, 
   Clock, CheckCircle, AlertCircle, PlusCircle, 
   Calendar, FileText, Settings, 
-  LayoutDashboard, ShieldAlert
+  LayoutDashboard, ShieldAlert, User
 } from "lucide-react";
 
-const stats = [
-  { label: "Total Students", value: "248", icon: GraduationCap, color: "blue" },
-  { label: "Total Teachers", value: "32", icon: BookOpen, color: "indigo" },
-  { label: "Active Classes", value: "18", icon: Clock, color: "sky" },
-  { label: "Pending Approvals", value: "5", icon: AlertCircle, color: "red" },
-];
-
 export default function AdminDashboard() {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/stats")
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.error("Error fetching admin stats:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const statCards = [
+    { label: "Total Students", value: stats?.totalStudents || 0, icon: GraduationCap, color: "blue" },
+    { label: "Total Teachers", value: stats?.totalTeachers || 0, icon: BookOpen, color: "indigo" },
+    { label: "Total Courses", value: stats?.totalCourses || 0, icon: Clock, color: "sky" },
+    { label: "Est. Revenue", value: `₹${(stats?.totalRevenue || 0).toLocaleString()}`, icon: TrendingUp, color: "red" },
+  ];
   return (
     <div className="space-y-12">
       {/* Welcome Section */}
@@ -32,14 +42,18 @@ export default function AdminDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, idx) => (
+        {statCards.map((stat, idx) => (
           <div key={idx} className="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] relative group hover:border-slate-700 transition-all shadow-lg hover:shadow-2xl">
             <div className={`shrink-0 w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center text-${stat.color}-500/80 mb-6 border border-slate-700 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
               <stat.icon className="w-6 h-6" />
             </div>
             <div>
               <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mb-1">{stat.label}</p>
-              <h3 className="text-4xl font-black text-white">{stat.value}</h3>
+              {loading ? (
+                <div className="h-10 w-20 bg-slate-800 animate-pulse rounded-lg"></div>
+              ) : (
+                <h3 className="text-4xl font-black text-white">{stat.value}</h3>
+              )}
             </div>
           </div>
         ))}
@@ -56,25 +70,23 @@ export default function AdminDashboard() {
           </div>
           
           <div className="space-y-6">
-            {[
-              { type: "signup", user: "Rahul Sharma", action: "joined as Student", time: "2 mins ago" },
-              { type: "approval", user: "Ms. Priyanka", action: "approved as Teacher", time: "1 hour ago" },
-              { type: "class", user: "JEE Adv. Batch B", action: "new class created", time: "5 hours ago" },
-              { type: "security", user: "Admin Login", action: "successful verification", time: "Yesterday" }
-            ].map((activity, idx) => (
-              <div key={idx} className="flex items-center gap-5 p-4 rounded-3xl bg-slate-800/30 border border-slate-800/50 hover:bg-slate-800/50 transition-all">
-                <div className={`w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700 shadow-sm transition-all`}>
-                  {activity.type === 'signup' ? <GraduationCap className="w-5 h-5 text-blue-500" /> : 
-                   activity.type === 'approval' ? <CheckCircle className="w-5 h-5 text-green-500" /> : 
-                   activity.type === 'security' ? <ShieldAlert className="w-5 h-5 text-red-500" /> : 
-                   <Calendar className="w-5 h-5 text-sky-500" />}
+            {!stats?.recentUsers || stats.recentUsers.length === 0 ? (
+              <p className="text-slate-500 font-bold py-10 text-center">No recent activity detected.</p>
+            ) : (
+              stats.recentUsers.map((activity: any, idx: number) => (
+                <div key={idx} className="flex items-center gap-5 p-4 rounded-3xl bg-slate-800/30 border border-slate-800/50 hover:bg-slate-800/50 transition-all">
+                  <div className={`w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700 shadow-sm transition-all`}>
+                    <User className="w-5 h-5 text-blue-500" />
+                  </div>
+                  <div>
+                     <p className="text-sm font-bold text-white"><span className="text-red-500">{activity.name}</span> joined as {activity.role}</p>
+                     <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-0.5">
+                       {new Date(activity.createdAt).toLocaleString()}
+                     </p>
+                  </div>
                 </div>
-                <div>
-                   <p className="text-sm font-bold text-white"><span className="text-red-500">{activity.user}</span> {activity.action}</p>
-                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-0.5">{activity.time}</p>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 

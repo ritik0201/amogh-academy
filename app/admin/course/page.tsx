@@ -2,9 +2,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { 
   Plus, Edit, Trash2, X, User, BookOpen, ExternalLink, Loader2, 
-  Image as ImageIcon, Upload, Shield, Users, Layers, Zap, Search, ChevronRight
+  Image as ImageIcon, Upload, Shield, Users, Layers, Zap, Search, ChevronRight, Eye
 } from "lucide-react";
 
 interface Teacher {
@@ -24,6 +25,7 @@ interface Course {
 }
 
 export default function AdminCoursePage() {
+  const router = useRouter();
   const [courses, setCourses] = useState<Course[]>([]);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(true);
@@ -216,7 +218,7 @@ export default function AdminCoursePage() {
             </div>
           ) : (
             filteredCourses.map((course) => (
-              <div key={course._id} className="course-card">
+              <div key={course._id} className="course-card" style={{cursor:"pointer"}} onClick={() => router.push(`/admin/course/${course._id}`)}>
                 <div className="thumbnail-container">
                   {course.thumbnail ? (
                     <img src={course.thumbnail} alt={course.title} />
@@ -227,10 +229,10 @@ export default function AdminCoursePage() {
                   )}
                   <div className="card-overlay"></div>
                   <div className="card-actions">
-                    <button className="action-btn edit" onClick={() => openEditModal(course)} title="Settings">
+                    <button className="action-btn edit" onClick={(e) => { e.stopPropagation(); openEditModal(course); }} title="Settings">
                       <Edit size={16} />
                     </button>
-                    <button className="action-btn delete" onClick={() => handleDelete(course._id)} title="Archive">
+                    <button className="action-btn delete" onClick={(e) => { e.stopPropagation(); handleDelete(course._id); }} title="Archive">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -249,7 +251,7 @@ export default function AdminCoursePage() {
                   <div className="card-footer">
                     <div className="course-type">
                        <Zap size={12} className="text-yellow-400" />
-                       <span>Standard Course • ₹{course.price || 5}</span>
+                       <span>Standard Course â€¢ â‚¹{course.price || 5}</span>
                     </div>
                     <ChevronRight size={18} className="arrow-icon" />
                   </div>
@@ -340,7 +342,7 @@ export default function AdminCoursePage() {
                 </div>
               </div>
               <div className="form-group">
-                <label>Course Price (₹)</label>
+                <label>Course Price (â‚¹)</label>
                 <input
                   type="number"
                   min="0"
@@ -706,9 +708,11 @@ export default function AdminCoursePage() {
           background: rgba(2, 6, 23, 0.9);
           backdrop-filter: blur(15px);
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: center;
           z-index: 1000;
+          overflow-y: auto;
+          padding: 2rem 1rem;
         }
 
         .modal-content {
@@ -717,8 +721,10 @@ export default function AdminCoursePage() {
           border-radius: 40px;
           width: 100%;
           max-width: 600px;
+          max-height: none;
           border: 1px solid #1e293b;
           box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.7);
+          margin: auto;
         }
 
         .modal-header {
@@ -995,3 +1001,4 @@ export default function AdminCoursePage() {
     </div>
   );
 }
+

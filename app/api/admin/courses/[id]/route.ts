@@ -3,6 +3,32 @@ import dbConnect from "@/lib/dbConnect";
 import Course from "@/models/course";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import "@/models/lecture"; // register Lecture model for population
+
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    const session = await getServerSession(authOptions);
+    if (!session || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await dbConnect();
+    const course = await Course.findById(id)
+      .populate("teacher", "name email phone subject experience")
+      .populate("enrolledStudents", "name email phone createdAt")
+      .populate("lectures");
+
+    if (!course) {
+      return NextResponse.json({ error: "Course not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(course);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {

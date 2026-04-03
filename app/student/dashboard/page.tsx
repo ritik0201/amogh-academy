@@ -1,14 +1,24 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { 
   BookOpen, Video, Star, Award, TrendingUp, Calendar, 
-  ArrowRight, Sparkles, GraduationCap 
+  ArrowRight, Sparkles, GraduationCap, Loader2 
 } from "lucide-react";
 
 export default function StudentDashboard() {
   const { data: session } = useSession();
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/student/stats")
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.error("Error fetching student stats:", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -40,7 +50,13 @@ export default function StudentDashboard() {
           <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-4">
              <Video className="w-6 h-6" />
           </div>
-          <p className="text-3xl font-black text-slate-900 tracking-tight">Active</p>
+          {loading ? (
+            <div className="h-8 w-16 bg-slate-100 animate-pulse rounded-lg"></div>
+          ) : (
+            <p className="text-3xl font-black text-slate-900 tracking-tight">
+              {stats?.totalCourses || 0}
+            </p>
+          )}
           <p className="text-xs font-black text-slate-400 uppercase tracking-widest mt-1">Video Courses</p>
         </div>
 
@@ -80,22 +96,29 @@ export default function StudentDashboard() {
             </div>
             
             <div className="space-y-4">
-               {[
-                 { time: "09:00 AM", event: "Physics: Quantum Mechanics", type: "Live Session", color: "bg-red-50 text-red-600 border-red-100" },
-                 { time: "11:30 AM", event: "Mathematics: Calculus III", type: "Offline Test", color: "bg-blue-50 text-blue-600 border-blue-100" },
-                 { time: "02:00 PM", event: "Chemistry: Organic Synthesis", type: "Demo Class", color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
-               ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-6 p-4 rounded-2xl border border-slate-50 hover:bg-slate-50 transition-all cursor-pointer">
-                     <div className="text-slate-400 font-bold text-xs uppercase w-20">{item.time}</div>
-                     <div className="flex-grow">
-                        <h4 className="font-bold text-slate-900 tracking-tight">{item.event}</h4>
-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Academic Track</p>
-                     </div>
-                     <div className={`px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest ${item.color}`}>
-                        {item.type}
-                     </div>
-                  </div>
-               ))}
+               {!stats?.recentCourses || stats.recentCourses.length === 0 ? (
+                 <div className="py-10 text-center">
+                    <p className="text-slate-400 font-bold">You are not enrolled in any courses yet.</p>
+                    <a href="/courses" className="text-blue-600 text-sm font-black uppercase tracking-widest hover:underline mt-2 inline-block">Browse Courses</a>
+                 </div>
+               ) : (
+                 stats.recentCourses.map((item: any, index: number) => (
+                    <div 
+                      key={index} 
+                      className="flex items-center gap-6 p-4 rounded-2xl border border-slate-50 hover:bg-slate-50 transition-all cursor-pointer"
+                      onClick={() => window.location.href = `/student/course`}
+                    >
+                       <div className="text-slate-400 font-bold text-xs uppercase w-24">Enrolled</div>
+                       <div className="flex-grow">
+                          <h4 className="font-bold text-slate-900 tracking-tight">{item.title}</h4>
+                          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">By {item.teacher?.name || "Faculty"}</p>
+                       </div>
+                       <div className={`px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest bg-blue-50 text-blue-600 border-blue-100`}>
+                          Active
+                       </div>
+                    </div>
+                 ))
+               )}
             </div>
          </div>
 

@@ -4,14 +4,16 @@
 import { useState, useEffect } from "react";
 import { 
   Plus, Video, Play, ExternalLink, X, BookOpen, Loader2, ArrowLeft, 
-  Monitor, Radio, Clock, ShieldCheck, Zap
+  Monitor, Radio, Clock, ShieldCheck, Zap, Copy, CheckCheck
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface Course {
   _id: string;
   title: string;
   description: string;
   thumbnail: string;
+  enrolledStudents?: { email: string }[];
 }
 
 interface Lecture {
@@ -39,6 +41,24 @@ export default function TeacherCoursePage() {
     youtubeUrl: "",
     isLive: false 
   });
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmails = () => {
+    if (!selectedCourse?.enrolledStudents || selectedCourse.enrolledStudents.length === 0) {
+      toast.error("No students enrolled in this course yet.");
+      return;
+    }
+
+    const emails = selectedCourse.enrolledStudents.map(s => s.email).join(", ");
+    navigator.clipboard.writeText(emails).then(() => {
+      setCopied(true);
+      toast.success("All student emails copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(err => {
+      console.error("Failed to copy emails:", err);
+      toast.error("Failed to copy emails. Please try again.");
+    });
+  };
 
   useEffect(() => {
     fetchAssignedCourses();
@@ -211,9 +231,19 @@ export default function TeacherCoursePage() {
               </div>
               <p className="subtitle">Manage lectures and live sessions for this course</p>
             </div>
-            <button className="btn-primary" onClick={() => setIsAddModalOpen(true)}>
-              <Plus size={20} /> New Lecture
-            </button>
+            <div className="flex items-center gap-3">
+              <button 
+                className="btn-secondary" 
+                onClick={handleCopyEmails}
+                title="Copy all student emails"
+              >
+                {copied ? <CheckCheck size={18} className="text-emerald-400" /> : <Copy size={18} />}
+                <span>Copy Emails</span>
+              </button>
+              <button className="btn-primary" onClick={() => setIsAddModalOpen(true)}>
+                <Plus size={20} /> New Lecture
+              </button>
+            </div>
           </div>
 
           <div className="lecture-section">
@@ -511,6 +541,26 @@ export default function TeacherCoursePage() {
         .btn-primary:hover {
           transform: translateY(-4px) scale(1.02);
           box-shadow: 0 20px 35px -8px rgba(0, 112, 243, 0.5);
+        }
+
+        .btn-secondary {
+           background: #0f172a;
+           border: 1px solid #1e293b;
+           color: #f8fafc;
+           padding: 1rem 1.5rem;
+           border-radius: 14px;
+           display: flex;
+           align-items: center;
+           gap: 0.75rem;
+           font-weight: 700;
+           cursor: pointer;
+           transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+           background: #1e293b;
+           border-color: #3b82f6;
+           transform: translateY(-4px);
         }
 
         .course-grid {

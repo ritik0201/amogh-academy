@@ -1,17 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Users, BookOpen, Calendar, ClipboardList, 
   ArrowRight, PlusCircle, CheckCircle2, TrendingUp,
-  Award, Clock
+  Award, Clock, Loader2
 } from "lucide-react";
 
 export default function TeacherDashboard() {
-  const classes = [
-    { name: "Advanced Mathematics", batch: "Batch A", students: 45, next: "Today, 11:30 AM", color: "indigo" },
-    { name: "Thermodynamics", batch: "Batch C", students: 28, next: "Today, 2:00 PM", color: "blue" },
-    { name: "Practice Session", batch: "Doubt Batch", students: 12, next: "Tomorrow, 9:00 AM", color: "sky" },
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/teacher/stats")
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.error("Error fetching teacher stats:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const statCards = [
+    { label: "Assigned Courses", value: stats?.totalCourses || 0, icon: BookOpen, color: "blue" },
+    { label: "Total Students", value: stats?.totalStudents || 0, icon: Users, color: "indigo" },
+    { label: "Average Rating", value: "4.9/5", icon: Award, color: "amber" }
   ];
 
   return (
@@ -34,17 +45,17 @@ export default function TeacherDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[
-          { label: "Total Students", value: "82", icon: Users, color: "blue" },
-          { label: "Hours Taught", value: "124h", icon: Clock, color: "indigo" },
-          { label: "Average Rating", value: "4.9/5", icon: Award, color: "amber" }
-        ].map((stat, idx) => (
+        {statCards.map((stat, idx) => (
           <div key={idx} className="bg-white border border-slate-100 p-10 rounded-[3rem] shadow-sm hover:shadow-xl transition-all group">
             <div className={`w-14 h-14 rounded-2xl bg-${stat.color}-50 flex items-center justify-center text-${stat.color}-600 border border-${stat.color}-100 mb-8 transition-transform group-hover:scale-110 group-hover:-rotate-3`}>
               <stat.icon className="w-7 h-7" />
             </div>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-            <h3 className="text-4xl font-black text-slate-900">{stat.value}</h3>
+            {loading ? (
+               <Loader2 className="w-8 h-8 animate-spin text-slate-300" />
+            ) : (
+               <h3 className="text-4xl font-black text-slate-900">{stat.value}</h3>
+            )}
           </div>
         ))}
       </div>
@@ -57,33 +68,38 @@ export default function TeacherDashboard() {
           </div>
           
           <div className="space-y-6">
-            {classes.map((cls, idx) => (
-              <div key={idx} className="bg-white border border-slate-100 rounded-[2.5rem] p-10 shadow-sm flex flex-wrap items-center justify-between gap-8 hover:shadow-2xl hover:border-indigo-100 transition-all group">
-                <div className="flex gap-6 items-center">
-                  <div className={`w-14 h-14 rounded-2xl bg-${cls.color}-50 flex items-center justify-center text-${cls.color}-600 border border-${cls.color}-100 shadow-sm`}>
-                     <BookOpen className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-black text-slate-900 mb-1">{cls.name}</h4>
-                    <span className="px-3 py-1 bg-slate-100 rounded-lg text-[10px] font-black uppercase tracking-wider text-slate-500">{cls.batch}</span>
-                  </div>
-                </div>
-                
-                <div className="flex gap-12 items-center">
-                   <div className="text-center">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Students</p>
-                      <p className="text-lg font-black text-slate-800">{cls.students}</p>
-                   </div>
-                   <div className="text-right">
-                      <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-1">Time Left</p>
-                      <p className="text-lg font-black text-slate-800">{cls.next}</p>
-                   </div>
-                   <button className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/20 group-hover:scale-110 transition-transform">
-                      <ArrowRight className="w-5 h-5" />
-                   </button>
-                </div>
+            {!stats?.recentCourses || stats.recentCourses.length === 0 ? (
+              <div className="p-10 border border-dashed border-slate-200 rounded-[2.5rem] text-center">
+                 <p className="text-slate-400 font-bold tracking-tight">No active courses assigned yet.</p>
               </div>
-            ))}
+            ) : (
+              stats.recentCourses.map((cls: any, idx: number) => (
+                <div key={idx} className="bg-white border border-slate-100 rounded-[2.5rem] p-10 shadow-sm flex flex-wrap items-center justify-between gap-8 hover:shadow-2xl hover:border-indigo-100 transition-all group">
+                  <div className="flex gap-6 items-center">
+                    <div className={`w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-sm`}>
+                       <BookOpen className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-black text-slate-900 mb-1">{cls.title}</h4>
+                      <span className="px-3 py-1 bg-slate-100 rounded-lg text-[10px] font-black uppercase tracking-wider text-slate-500">Live Course</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-12 items-center">
+                     <div className="text-center">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Students</p>
+                        <p className="text-lg font-black text-slate-800">{cls.enrolledStudents?.length || 0}</p>
+                     </div>
+                     <button 
+                       onClick={() => window.location.href = `/teacher/course`}
+                       className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/20 group-hover:scale-110 transition-transform"
+                     >
+                        <ArrowRight className="w-5 h-5" />
+                     </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

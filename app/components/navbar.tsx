@@ -6,27 +6,9 @@ import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-
-      setLastScrollY(currentScrollY); //
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
@@ -41,16 +23,14 @@ export default function Navbar() {
     { name: "Coaching", href: "/coaching", color: "bg-blue-500" },
     { name: "Classes", href: "/classes", color: "bg-sky-500" },
     { name: "Faculty", href: "/faculty", color: "bg-slate-700" },
-    { name: "Computer Edu", href: "/computer-edu", color: "bg-blue-400" },
+    { name: "Courses", href: "/courses", color: "bg-blue-400" },
     { name: "Contact", href: "/contact", color: "bg-blue-600" },
   ];
 
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ease-in-out ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className="fixed top-0 left-0 w-full z-[100] transition-all duration-300 ease-in-out translate-y-0"
       >
         <div className="w-full bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm">
           <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 flex justify-between items-center py-4">

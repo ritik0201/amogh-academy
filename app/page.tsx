@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { 
-  GraduationCap, Monitor, CheckCircle, 
-  BookOpen, Award, Zap, ChevronRight, User, Phone, Mail, Book, Star,
-  Users, FlaskConical, Calculator, Globe, Microscope, Atom, ArrowRight, Sparkles, Loader2, Play
+  Users, FlaskConical, Calculator, Globe, Microscope, Atom, ArrowRight, Sparkles, Loader2, Play,
+  Quote, MessageSquare, HelpCircle, ChevronDown, Monitor, CheckCircle, BookOpen, Award, Zap, ChevronRight, User, Phone, Mail, Book, Star, Clock, Video, GraduationCap
 } from "lucide-react";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
@@ -189,111 +188,130 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-32 pb-16 lg:pt-40 lg:pb-24 flex items-center min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative z-10 pt-32 pb-16 lg:pt-48 lg:pb-32 flex items-center min-h-screen">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-12 w-full text-center lg:text-left">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
             {/* Left Column: Text */}
-            <div className="text-left relative z-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-blue-100 text-blue-700 font-bold mb-8 shadow-sm">
-                <span className="relative flex h-2.5 w-2.5">
+            <div className="lg:col-span-7 space-y-10 relative z-20">
+              <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/40 backdrop-blur-md border border-blue-100/50 text-blue-700 font-black shadow-xl shadow-blue-500/5 animate-in fade-in slide-in-from-left-5 duration-700">
+                <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-600"></span>
                 </span>
-                <span className="text-xs uppercase tracking-widest">Admissions Open 2024-25</span>
+                <span className="text-[10px] uppercase tracking-[0.25em]">Admissions Open 2024-25</span>
               </div>
               
-              <h1 className="text-5xl lg:text-7xl font-black tracking-tighter mb-6 leading-[1.05] text-slate-900">
-                Unlock Your <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-500">True Potential</span>
+              <h1 className="text-6xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-slate-900 animate-in fade-in slide-in-from-bottom-5 duration-700">
+                Reshaping <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400">Future Minds.</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-slate-600 font-medium mb-8 leading-relaxed max-w-lg border-l-4 border-blue-500 pl-5">
-                Join Varanasi's premier institute for <span className="font-bold text-slate-800">expert K-12 coaching</span> and <span className="font-bold text-slate-800">advanced computer education</span>. We build careers, not just students.
+              <p className="text-xl md:text-2xl text-slate-500 font-bold max-w-2xl leading-relaxed animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                Varanasi's #1 integrated learning hub for <span className="text-blue-600">K-12 Board Foundation</span>, <span className="text-blue-600">Competitive Targets</span>, and <span className="text-blue-600">Advanced Computer Skillset</span>.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                <a href="/coaching" className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 flex justify-center items-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-5 items-center justify-center lg:justify-start pt-6 animate-in fade-in zoom-in-95 duration-1000">
+                <a href="/courses" className="group w-full sm:w-auto px-10 py-5 rounded-[2rem] bg-blue-600 text-white font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all shadow-2xl shadow-blue-600/30 flex items-center justify-center gap-3 active:scale-95">
                   Explore Courses
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </a>
-                <a href="/contact" className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white/90 backdrop-blur-sm border border-slate-200 text-slate-700 font-bold text-base hover:bg-white hover:border-slate-300 transition-all shadow-sm flex justify-center items-center">
-                  Contact Us
+                <a href="/contact" className="w-full sm:w-auto px-10 py-5 rounded-[2rem] bg-white border border-slate-200 text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all shadow-lg flex items-center justify-center hover:border-blue-200">
+                  Connect w/ Us
                 </a>
               </div>
               
-              <div className="mt-12 flex items-center gap-6 text-sm font-bold text-slate-500">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/60 backdrop-blur-sm border border-slate-200/50"><CheckCircle className="w-4 h-4 text-blue-500"/> Certified Tutors</div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/60 backdrop-blur-sm border border-slate-200/50"><Award className="w-4 h-4 text-blue-500"/> Job Placement</div>
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-10 pt-12 border-t border-slate-200/50">
+                 {[
+                   { label: "Students Trained", value: "5000+" },
+                   { label: "Expert Faculty", value: "25+" },
+                   { label: "Success Rate", value: "98%" }
+                 ].map((metric) => (
+                   <div key={metric.label}>
+                      <p className="text-4xl font-black text-slate-900 tracking-tighter mb-1">{metric.value}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{metric.label}</p>
+                   </div>
+                 ))}
               </div>
             </div>
 
-            {/* Right Column: Premium Inquiry Form */}
-            <div className="relative z-20 flex justify-center lg:justify-end">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-sky-100 rounded-[2.5rem] transform rotate-3 scale-[1.02] blur-md opacity-50"></div>
-              <div className="bg-white/80 backdrop-blur-2xl p-8 w-full max-w-[440px] rounded-[2rem] shadow-2xl border border-white relative relative">
+            {/* Right Column: Glassmorphism Inquiry Form */}
+            <div className="lg:col-span-5 relative z-20 animate-in fade-in slide-in-from-right-10 duration-1000 delay-300">
+              <div className="absolute inset-0 bg-blue-600/10 blur-[120px] rounded-full scale-125 opacity-50"></div>
+              <div className="relative bg-white/60 backdrop-blur-3xl p-10 lg:p-12 rounded-[3.5rem] shadow-2xl border border-white/60 overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-bl-full"></div>
                 
-                <div className="mb-8">
-                  <h3 className="text-3xl font-black text-slate-900 tracking-tight">Claim Your Seat</h3>
-                  <p className="text-slate-500 font-medium mt-2">Book a free demo class today and experience the Amogh difference.</p>
+                <div className="mb-10 text-center lg:text-left">
+                  <h3 className="text-4xl font-black text-slate-900 tracking-tight">Register Demo</h3>
+                  <p className="text-slate-500 font-bold mt-2">Start your journey with a free demo session.</p>
                 </div>
 
-                <form className="space-y-4" onSubmit={handleSubmit}>
+                <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full pl-6 pr-6 py-4.5 rounded-[1.5rem] border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-white/80 shadow-inner font-bold text-slate-900 placeholder-slate-400" placeholder="Student Name" />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="relative group">
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full pl-6 pr-6 py-4.5 rounded-[1.5rem] border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-white/80 shadow-inner font-bold text-slate-900 placeholder-slate-400" placeholder="Mobile" />
                     </div>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all bg-white/90 shadow-sm font-medium text-slate-900 placeholder-slate-400" placeholder="Full Name" />
+                    <div className="relative group">
+                      <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full pl-6 pr-6 py-4.5 rounded-[1.5rem] border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-white/80 shadow-inner font-bold text-slate-900 placeholder-slate-400" placeholder="Email" />
+                    </div>
                   </div>
 
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-                    </div>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all bg-white/90 shadow-sm font-medium text-slate-900 placeholder-slate-400" placeholder="Mobile Number" />
-                  </div>
-
-                  <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-                    </div>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all bg-white/90 shadow-sm font-medium text-slate-900 placeholder-slate-400" placeholder="Email Address" />
-                  </div>
-
-                  <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Book className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-                    </div>
-                    <select name="course" value={formData.course} onChange={handleChange} required className="w-full pl-12 pr-10 py-3.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all bg-white/90 shadow-sm font-medium text-slate-700 appearance-none cursor-pointer">
-                      <option value="" disabled hidden>Select Course of Interest</option>
-                      <option value="Foundation (6th - 12th)">Foundation (6th - 12th)</option>
-                      <option value="Competitive (CUET/NEET/JEE)">Competitive (CUET/NEET/JEE)</option>
-                      <option value="Computer Science (MDCA/DCA/CCC)">Computer Science (MDCA/DCA/CCC)</option>
+                    <select name="course" value={formData.course} onChange={handleChange} required className="w-full pl-6 pr-12 py-4.5 rounded-[1.5rem] border border-slate-200 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all bg-white/80 shadow-inner font-bold text-slate-700 appearance-none cursor-pointer">
+                      <option value="" disabled hidden>Desired Track</option>
+                      <option value="Foundation">Foundation (6th-12th)</option>
+                      <option value="Competitive">Target (JEE/NEET/CUET)</option>
+                      <option value="Computer">Advanced Computer Skill</option>
                     </select>
-                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                       <ChevronRight className="h-4 w-4 text-slate-400 rotate-90" />
-                    </div>
+                    <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                   </div>
                   
-                  {errorMessage && (
-                    <div className="text-red-500 text-sm font-medium px-2">{errorMessage}</div>
-                  )}
-
                   {status === "success" && (
-                    <div className="text-green-600 bg-green-50 border border-green-200 rounded-lg p-3 text-sm font-medium flex items-center gap-2">
-                       <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                       Inquiry sent successfully! We'll contact you soon.
+                    <div className="text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-sm font-bold flex items-center gap-2 animate-in zoom-in-95">
+                       <CheckCircle className="w-5 h-5 shrink-0" />
+                       Success! We'll contact you in 24 hours.
                     </div>
                   )}
 
-                  <button type="submit" disabled={status === "loading"} className="w-full py-4 mt-4 rounded-xl bg-slate-900 text-white font-black text-lg hover:bg-blue-600 transition-all shadow-lg hover:shadow-blue-500/30 hover:-translate-y-1 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:bg-slate-900">
-                    {status === "loading" ? "Sending..." : "Submit Inquiry"}
+                  <button type="submit" disabled={status === "loading"} className="group w-full py-5 mt-4 rounded-[1.5rem] bg-blue-600 text-white font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 disabled:opacity-70 h-16 flex items-center justify-center gap-3">
+                    {status === "loading" ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+                      <>
+                        Book Free Demo
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </button>
                 </form>
               </div>
             </div>
-
           </div>
+        </div>
+      </section>
+
+      {/* Impact Indicators [NEW] */}
+      <section className="relative z-10 py-12 lg:py-24 bg-white/40 border-y border-slate-200/50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4">
+           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { label: "Learning Hours", value: "250K+", icon: Clock, color: "text-blue-500" },
+                { label: "Active Faculty", value: "25+", icon: Users, color: "text-indigo-500" },
+                { label: "Digital Courses", value: "40+", icon: Video, color: "text-sky-500" },
+                { label: "Satisfaction", value: "4.9/5", icon: Star, color: "text-amber-500" }
+              ].map((stat, idx) => (
+                <div key={idx} className="flex flex-col items-center text-center p-6 bg-white/60 rounded-3xl border border-slate-100 shadow-sm">
+                   <div className={`p-4 bg-white rounded-2xl shadow-sm border border-slate-50 mb-4 ${stat.color}`}>
+                      <stat.icon className="h-6 w-6" />
+                   </div>
+                   <h3 className="text-3xl font-black text-slate-900 tracking-tighter">{stat.value}</h3>
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{stat.label}</p>
+                </div>
+              ))}
+           </div>
         </div>
       </section>
 
@@ -772,26 +790,37 @@ export default function Home() {
                         {course.description || "Comprehensive online module covering all core concepts with expert guidance."}
                       </p>
                       
-                      <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Price</span>
-                          <span className="text-3xl font-black text-white">₹{course.price || 5}</span>
+                      {course.isEnrolled ? (
+                        <div className="pt-6 border-t border-white/10 w-full mt-auto">
+                          <button 
+                            onClick={() => router.push("/student/course")}
+                            className="w-full px-6 py-3.5 bg-emerald-600 text-white font-black rounded-2xl shadow-lg shadow-emerald-600/20 hover:bg-emerald-500 transition-all active:scale-95 flex items-center justify-center gap-2"
+                          >
+                            <Play className="w-4 h-4" fill="currentColor" /> Start Learning
+                          </button>
                         </div>
-                        
-                        <button 
-                          onClick={() => handlePayment(course)}
-                          disabled={buyingCourseId === course._id}
-                          className="px-6 py-3.5 bg-blue-600 text-white font-black rounded-2xl shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50"
-                        >
-                          {buyingCourseId === course._id ? (
-                            <Loader2 className="w-5 h-5 animate-spin" />
-                          ) : (
-                            <>
-                              Enroll Now <ArrowRight className="w-4 h-4" />
-                            </>
-                          )}
-                        </button>
-                      </div>
+                      ) : (
+                        <div className="flex items-center justify-between pt-6 border-t border-white/10">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Price</span>
+                            <span className="text-3xl font-black text-white">₹{course.price || 5}</span>
+                          </div>
+                          
+                          <button 
+                            onClick={() => handlePayment(course)}
+                            disabled={buyingCourseId === course._id}
+                            className="px-6 py-3.5 bg-blue-600 text-white font-black rounded-2xl shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50"
+                          >
+                            {buyingCourseId === course._id ? (
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                              <>
+                                Enroll Now <ArrowRight className="w-4 h-4" />
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))
@@ -969,6 +998,107 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section [NEW] */}
+      <section className="relative z-10 py-32 border-t border-slate-200/50 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+           <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-black text-[10px] uppercase tracking-widest">
+                 Community Feedback
+              </div>
+              <h2 className="text-5xl lg:text-6xl font-black text-slate-900 tracking-tight">Voices of Success</h2>
+              <p className="text-lg text-slate-500 font-medium leading-relaxed">Hear from the students and parents who have experienced the Amogh transformation.</p>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { name: "Rahul Singh", role: "JEE Aspirant", quote: "Amogh Academy completely changed my outlook on Physics. The teachers go above and beyond." },
+                { name: "Suman Tiwari", role: "Parent", quote: "The foundation course for class 10 was excellent. My daughter showed significant improvement in her boards." },
+                { name: "Priya Verma", role: "MDCA Student", quote: "Professional environment and practical training. I secured a job right after course completion." }
+              ].map((testi, idx) => (
+                <div key={idx} className="bg-slate-50 p-10 rounded-[3rem] border border-slate-100 shadow-sm relative group hover:shadow-2xl transition-all h-full flex flex-col">
+                   <div className="absolute top-10 right-10 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <Quote className="h-12 w-12 text-blue-600" />
+                   </div>
+                   <div className="flex gap-1 mb-6">
+                      {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />)}
+                   </div>
+                   <p className="text-xl font-bold text-slate-800 leading-relaxed mb-8 flex-grow italic">"{testi.quote}"</p>
+                   <div className="flex items-center gap-4 border-t border-slate-200/50 pt-8 mt-auto">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black">{testi.name.charAt(0)}</div>
+                      <div>
+                         <p className="font-black text-slate-900 tracking-tight">{testi.name}</p>
+                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{testi.role}</p>
+                      </div>
+                   </div>
+                </div>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section [NEW] */}
+      <section className="relative z-10 py-32 border-t border-slate-200/50 bg-slate-50">
+        <div className="max-w-4xl mx-auto px-4">
+           <div className="text-center mb-20 space-y-4">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-slate-200 border border-slate-300 text-slate-700 font-black text-[10px] uppercase tracking-widest">
+                 Information Center
+              </div>
+              <h2 className="text-5xl font-black text-slate-900 tracking-tight">Common Questions</h2>
+           </div>
+
+           <div className="space-y-4">
+              {[
+                { q: "What boards do you cover in your coaching?", a: "We provide comprehensive coaching for C.B.S.E. and I.C.S.E. boards from classes 6th to 12th." },
+                { q: "Do you offer job placement after computer courses?", a: "Yes, our MDCA and DCA graduates receive dedicated placement training and assistance to secure relevant roles." },
+                { q: "Are there free demo classes available?", a: "Absolutely! We encourage all parents and students to book a free demo session to experience our teaching methodology." },
+                { q: "Do you provide online learning materials?", a: "Yes, our registered students get exclusive access to our premium digital portal featuring video lectures and sample papers." }
+              ].map((faq, idx) => (
+                <div key={idx} className="bg-white border border-slate-200 rounded-[2rem] p-8 shadow-sm hover:shadow-xl transition-all group">
+                   <div className="flex items-center justify-between gap-6">
+                      <div className="flex items-center gap-5">
+                         <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                            <HelpCircle className="h-5 w-5" />
+                         </div>
+                         <h4 className="text-xl font-black text-slate-900 tracking-tight">{faq.q}</h4>
+                      </div>
+                   </div>
+                   <div className="mt-6 pl-15">
+                      <p className="text-slate-500 font-medium leading-relaxed border-l-2 border-slate-100 pl-6 ml-5">
+                        {faq.a}
+                      </p>
+                   </div>
+                </div>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative z-10 py-24 px-4 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+           <div className="bg-slate-950 rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,#2563eb30_0%,transparent_60%)] group-hover:scale-150 transition-transform duration-1000"></div>
+              <div className="relative z-10 space-y-10">
+                 <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
+                    Ready to Start Your <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-300">Journey to Success?</span>
+                 </h2>
+                 <p className="text-slate-400 text-xl font-medium max-w-2xl mx-auto">
+                   Join thousands of successful learners today. Admissions are now active for the upcoming academic session.
+                 </p>
+                 <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+                    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="px-12 py-5 bg-blue-600 text-white font-black text-xs uppercase tracking-widest rounded-full shadow-2xl shadow-blue-600/30 hover:bg-blue-700 transition-all hover:scale-105 active:scale-95">
+                       Register For Demo
+                    </button>
+                    <a href="/contact" className="px-12 py-5 bg-white/10 backdrop-blur-md border border-white/20 text-white font-black text-xs uppercase tracking-widest rounded-full hover:bg-white/20 transition-all">
+                       Contact Support
+                    </a>
+                 </div>
+              </div>
+           </div>
         </div>
       </section>
 

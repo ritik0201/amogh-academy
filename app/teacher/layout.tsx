@@ -20,9 +20,6 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
     { name: "My Dashboard", href: "/teacher/dashboard", icon: LayoutDashboard },
     { name: "My Courses", href: "/teacher/course", icon: Video },
     { name: "My Students", href: "/teacher/students", icon: Users },
-    { name: "Curriculum", href: "/teacher/curriculum", icon: BookOpen },
-    { name: "Schedules", href: "/teacher/schedules", icon: Calendar },
-    { name: "Assignments", href: "/teacher/assignments", icon: ClipboardList },
   ];
 
   return (

@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { 
-  Play, BookOpen, Clock, ChevronRight, Loader2, 
+import {
+  Play, BookOpen, Clock, ChevronRight, Loader2,
   Video, Monitor, Star, Award, Search, X, Maximize2
 } from "lucide-react";
 
@@ -52,8 +52,16 @@ export default function StudentCoursePage() {
   };
 
   const getYoutubeEmbedUrl = (url: string) => {
-    const videoId = url.split("v=")[1] || url.split("/").pop();
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1`;
+    if (!url) return "";
+    let videoId = url.split("v=")[1];
+    if (!videoId) {
+      videoId = url.split("/").pop() || "";
+    }
+    // Remove query params if any from the parsed ID
+    videoId = videoId.split("?")[0] || videoId;
+    // rel=0 prevents videos from other channels at the end.
+    // iv_load_policy=3 hides annotations.
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1&showinfo=0&disablekb=1&iv_load_policy=3`;
   };
 
   if (loading) {
@@ -75,8 +83,8 @@ export default function StudentCoursePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
           {courses.length > 0 ? (
             courses.map((course) => (
-              <div 
-                key={course._id} 
+              <div
+                key={course._id}
                 onClick={() => setSelectedCourse(course)}
                 className="course-card group cursor-pointer"
               >
@@ -88,7 +96,7 @@ export default function StudentCoursePage() {
                 </div>
                 <div className="card-content">
                   <div className="teacher-badge">
-                     <BookOpen size={12} /> {course.teacher?.name}
+                    <BookOpen size={12} /> {course.teacher?.name}
                   </div>
                   <h3 className="course-title">{course.title}</h3>
                   <div className="card-meta">
@@ -100,86 +108,88 @@ export default function StudentCoursePage() {
             ))
           ) : (
             <div className="col-span-full py-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
-               <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Video className="w-10 h-10 text-blue-200" />
-               </div>
-               <h3 className="text-xl font-bold text-slate-900">No courses yet</h3>
-               <p className="text-slate-500 mt-2">Explore our catalog and start learning today!</p>
-               <a href="/#online-courses" className="inline-block mt-6 px-8 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20">Browse Courses</a>
+              <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Video className="w-10 h-10 text-blue-200" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900">No courses yet</h3>
+              <p className="text-slate-500 mt-2">Explore our catalog and start learning today!</p>
+              <a href="/#online-courses" className="inline-block mt-6 px-8 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20">Browse Courses</a>
             </div>
           )}
         </div>
       ) : (
         <div className="lecture-view mt-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-           <button 
-             onClick={() => setSelectedCourse(null)}
-             className="back-btn mb-8"
-           >
-              <ChevronRight className="rotate-180" size={18} /> Back to My Courses
-           </button>
+          <button
+            onClick={() => setSelectedCourse(null)}
+            className="back-btn mb-8"
+          >
+            <ChevronRight className="rotate-180" size={18} /> Back to My Courses
+          </button>
 
-           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-              {/* Lecture List */}
-              <div className="lg:col-span-1 space-y-4">
-                 <div className="course-info-mini p-6 bg-white rounded-3xl border border-slate-100 shadow-sm mb-6">
-                    <h2 className="text-xl font-black text-slate-900 mb-1">{selectedCourse.title}</h2>
-                    <p className="text-sm text-slate-500 font-medium">{selectedCourse.lectures?.length || 0} total lectures</p>
-                 </div>
-                 
-                 <div className="lecture-list custom-scrollbar">
-                    {selectedCourse.lectures?.map((lecture, index) => (
-                       <div 
-                         key={lecture._id || `lecture-${index}`}
-                         onClick={() => {
-                            setActiveVideoUrl(lecture.youtubeUrl);
-                            setActiveLectureTitle(lecture.title);
-                         }}
-                         className={`lecture-item ${activeVideoUrl === lecture.youtubeUrl ? 'active' : ''}`}
-                       >
-                          <div className="lecture-index">{index + 1}</div>
-                          <div className="lecture-info">
-                             <h4 className="lecture-name">{lecture.title}</h4>
-                             <div className="lecture-badges">
-                                {lecture.isLive && <span className="badge-live">LIVE</span>}
-                                <span className="lecture-duration"><Clock size={10} /> Video</span>
-                             </div>
-                          </div>
-                          <div className="play-btn"><Play size={14} fill="currentColor" /></div>
-                       </div>
-                    ))}
-                 </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* Lecture List */}
+            <div className="lg:col-span-1 space-y-4">
+              <div className="course-info-mini p-6 bg-white rounded-3xl border border-slate-100 shadow-sm mb-6">
+                <h2 className="text-xl font-black text-slate-900 mb-1">{selectedCourse.title}</h2>
+                <p className="text-sm text-slate-500 font-medium">{selectedCourse.lectures?.length || 0} total lectures</p>
               </div>
 
-              {/* Theater Mode View area for Video */}
-              <div className="lg:col-span-2">
-                 {activeVideoUrl ? (
-                    <div className="theater-mode animate-in zoom-in-95 duration-300">
-                       <div className="video-header">
-                          <h3 className="video-title">{activeLectureTitle}</h3>
-                          <div className="platform-tag">AMOGH ACADEMY PLAYER</div>
-                       </div>
-                       <div className="video-wrapper">
-                          <iframe
-                             src={getYoutubeEmbedUrl(activeVideoUrl)}
-                             title="Course Lecture"
-                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                             allowFullScreen
-                          ></iframe>
-                          <div className="video-footer-overlay">
-                             Viewing as Student: {session?.user?.name}
-                          </div>
-                       </div>
+              <div className="lecture-list custom-scrollbar">
+                {selectedCourse.lectures?.map((lecture, index) => (
+                  <div
+                    key={lecture._id || `lecture-${index}`}
+                    onClick={() => {
+                      setActiveVideoUrl(lecture.youtubeUrl);
+                      setActiveLectureTitle(lecture.title);
+                    }}
+                    className={`lecture-item ${activeVideoUrl === lecture.youtubeUrl ? 'active' : ''}`}
+                  >
+                    <div className="lecture-index">{index + 1}</div>
+                    <div className="lecture-info">
+                      <h4 className="lecture-name">{lecture.title}</h4>
+                      <div className="lecture-badges">
+                        {lecture.isLive && <span className="badge-live">LIVE</span>}
+                        <span className="lecture-duration"><Clock size={10} /> Video</span>
+                      </div>
                     </div>
-                 ) : (
-                    <div className="empty-video-placeholder">
-                       <div className="pulse-icon">
-                          <Monitor size={48} className="text-slate-200" />
-                       </div>
-                       <h3 className="text-xl font-bold text-slate-400 mt-6">Select a lecture to start watching</h3>
-                    </div>
-                 )}
+                    <div className="play-btn"><Play size={14} fill="currentColor" /></div>
+                  </div>
+                ))}
               </div>
-           </div>
+            </div>
+
+            {/* Theater Mode View area for Video */}
+            <div className="lg:col-span-2">
+              {activeVideoUrl ? (
+                <div className="theater-mode animate-in zoom-in-95 duration-300">
+                  <div className="video-header">
+                    <h3 className="video-title">{activeLectureTitle}</h3>
+                    <div className="platform-tag">AMOGH ACADEMY PLAYER</div>
+                  </div>
+                  <div className="video-wrapper">
+                    {/* We overlay a transparent div over the top area to block clicks on Share/Watch Later */}
+                    <div className="absolute top-0 left-0 w-full h-20 z-10 pointer-events-auto bg-transparent"></div>
+                      <iframe
+                        src={getYoutubeEmbedUrl(activeVideoUrl)}
+                        title="Course Lecture"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      ></iframe>
+                    <div className="video-footer-overlay z-20">
+                      Viewing as Student: {session?.user?.name}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="empty-video-placeholder">
+                  <div className="pulse-icon">
+                    <Monitor size={48} className="text-slate-200" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-400 mt-6">Select a lecture to start watching</h3>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
